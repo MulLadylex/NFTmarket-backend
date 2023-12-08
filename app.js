@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "./ipfs-upload.js";
 import { mint } from "./nft-minter.js";
+import dotenv from "dotenv";
+dotenv.config("./.env");
 
 const app = express();
 app.set("view engine", "ejs");
@@ -17,11 +19,10 @@ app.post('/upload', async (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
     
-
     const file = req.files.file;
     const filename = file.name;
     const filepath = 'IPFS/' + filename;
-    file.mv(filepath,  (err) => {
+    await file.mv(filepath,  (err) => {
         if (err) {
             console.log(err);
             res.status(500).send("Error Occured");
@@ -36,14 +37,15 @@ app.post('/upload', async (req, res) => {
     const metadata = {
         title: title,
         description: description,
-        image: 'https://ipfs.io/ipfs/' + cid + '/image.png',    //实际上传的地址
+        image: process.env.IMAGE_URL + cid    //改为实际上传的地址
     };
-    
+
     // Upload metadata to IPFS, get CID
     const metadataResult = await uploadJSONToIPFS(metadata);
+    const metadataCID = metadataResult.cid.toString();
     
-    // Mint NFT
-    await mint('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'); // mint to user
+    // Mint NFT to user (address, metadataurl)
+    await mint(process.env.account_address, process.env.IPFS_URL + metadataCID); 
 
     // return data
     res.json = {
@@ -53,9 +55,6 @@ app.post('/upload', async (req, res) => {
         status: "Uploaded Successfully"
     };
 });
-
-
-
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
