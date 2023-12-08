@@ -22,7 +22,7 @@ The users can use their wallet to buy the NFTs. The users can buy the NFTs in th
 ## 3. Usage
 1. Clone the repository
 ```
-git clone
+git clone https://github.com/MulLadylex/NFTmarket-backend.git
 ```
 2. Install the dependencies
 ```
