@@ -20,3 +20,29 @@ The users can connect their wallet to the front-end system. The users can use th
 ### 2.6. Buy NFTs
 The users can use their wallet to buy the NFTs. The users can buy the NFTs in the NFTpage.
 ## 3. Usage
+1. Clone the repository
+```
+git clone
+```
+2. Install the dependencies
+```
+npm install
+```
+3. Run the server
+
+    First, you need to run the IPFS daemon, you can use local IPFS daemon or the IPFS daemon on the cloud. 
+    ```
+    ```
+    Then, you need to start hardhat node, so that you can deploy the smart contract to the hardhat node. It`s used to deploy the smart contract, so we can through the abi to interact with the smart contract. 
+    ```
+    npx hardhat node
+    ```
+    Then, you need to deploy the smart contract to the hardhat node.
+    ```
+    npx hardhat run scripts/deploy.js --network localhost
+    ```
+    Or you can deploy the smart through remix.(make sure your remix is connected with the hardhat node)
+
+    Finally, you can run the server.
+
+    > Tip: You need to change the address of the smart contract and your account in the code.

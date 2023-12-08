@@ -5,8 +5,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npm run hardhatnode & node app.js",
-    "hardhatnode": "npx hardhat node",
+    "start": "node app.js",
     "test": "nodemon app.js"
   },
   "keywords": [],
