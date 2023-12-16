@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import { uploadFileToIPFS, uploadJSONToIPFS } from "./ipfs-upload.js";
@@ -10,6 +11,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
+app.use(cors());
 
 app.get("/", (req, res) => {
     res.render("Home");
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 app.post('/upload', async (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
+    const address = req.body.address;
+    console.log(title,description,address)
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({ message: 'No files were uploaded.' });
     }
@@ -47,7 +51,8 @@ app.post('/upload', async (req, res) => {
         const metadataCID = metadataResult.cid.toString();
         
         // Mint NFT to user (address, metadataurl)
-        await mint(process.env.account_address, process.env.IPFS_URL + metadataCID); 
+        const userAddress = address || process.env.account_address
+        await mint(userAddress, process.env.IMAGE_URL + metadataCID); 
         
         // return data
         res.json({
