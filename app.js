@@ -43,7 +43,7 @@ app.post('/upload', async (req, res) => {
         const metadata = {
             title: title,
             description: description,
-            image: process.env.IMAGE_URL + cid    //改为实际上传的地址
+            image: process.env.IMAGE_URL + cid + '/' + filename   //改为实际上传的地址
         };
         
         // Upload metadata to IPFS, get CID
